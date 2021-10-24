@@ -3,8 +3,10 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
 
 app.use(express.json());
+app.use(cookieParser());
 
 const { connect } = require("./database/connect");
 
@@ -17,12 +19,12 @@ app.listen(PORT, async (error) => {
   } else {
     console.log(`Server started at port ${PORT}`);
     connection = await connect();
+    require("./Controllers/UserController")(app);
   }
 });
 
 function authenticateToken(req, res, next) {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
+  const token = req.cookies.accessToken;
   if (token == null) return res.sendStatus(401);
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
