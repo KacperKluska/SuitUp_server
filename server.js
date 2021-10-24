@@ -17,6 +17,7 @@ app.listen(PORT, async (error) => {
   } else {
     console.log(`Server started at port ${PORT}`);
     connection = await connect();
+    require("./Controllers/UserController")(app);
   }
 });
 
