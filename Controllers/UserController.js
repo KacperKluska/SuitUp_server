@@ -28,8 +28,14 @@ module.exports = function (app) {
     const refreshToken = generateRefreshToken(user);
 
     res
-      .cookie("accessToken", accessToken)
-      .cookie("refreshToken", refreshToken)
+      .cookie("accessToken", accessToken, {
+        secure: process.env.NODE_ENV !== "development",
+        httpOnly: true,
+      })
+      .cookie("refreshToken", refreshToken, {
+        secure: process.env.NODE_ENV !== "development",
+        httpOnly: true,
+      })
       .status(200)
       .json({
         accessToken: accessToken,
@@ -69,7 +75,12 @@ module.exports = function (app) {
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
       if (err) return res.sendStatus(403);
       const accessToken = generateAccessToken({ email: user.email });
-      res.cookie("accessToken", accessToken).json({ accessToken: accessToken });
+      res
+        .cookie("accessToken", accessToken, {
+          secure: process.env.NODE_ENV !== "development",
+          httpOnly: true,
+        })
+        .json({ accessToken: accessToken });
     });
   });
 
