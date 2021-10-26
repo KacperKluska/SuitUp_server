@@ -1,25 +1,18 @@
-const { v4 } = require("uuid");
-const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { getConnection } = require("typeorm");
 const { app, authenticateToken } = require("../server");
 const { User } = require("../models/User");
+const { saveUser, getUserByEmail } = require("../services/UserService");
 
 module.exports = function (app) {
   app.post("/login", async (req, res) => {
-    const connection = getConnection();
-    const userRepository = connection.getRepository(User);
     const email = req.body.email;
     const password = req.body.password;
 
-    const foundUser = await userRepository.findOne({ where: { email: email } });
+    const foundUser = await getUserByEmail(email);
     if (!foundUser)
       return res.status(401).send({ error: "Invalid email or password" });
 
-    const passwordValidation = await bcrypt.compare(
-      password,
-      foundUser.password
-    );
+    const passwordValidation = await foundUser.comparePassword(password);
     if (!passwordValidation)
       return res.status(401).send({ error: "Invalid email or password" });
 
@@ -45,23 +38,17 @@ module.exports = function (app) {
   });
 
   app.post("/register", async (req, res) => {
-    const connection = getConnection();
-    const userRepository = connection.getRepository(User);
     const name = req.body.name;
     const surname = req.body.surname;
     const email = req.body.email;
     const password = req.body.password;
 
-    if ((await userRepository.find({ where: { email } })).length)
+    if (await getUserByEmail(email))
       return res
         .status(400)
         .send({ error: "User with that email already exists!" });
 
-    const hashedPassword = bcrypt.hashSync(password, 10);
-    const id = v4();
-    const newUser = new User(id, name, surname, email, hashedPassword);
-
-    const result = await userRepository.save(newUser);
+    const result = await saveUser(name, surname, email, password);
     if (result)
       return res.status(200).send({ message: "Account created successfully!" });
     return res.status(400).send({ error: "Error during signing up process" });
