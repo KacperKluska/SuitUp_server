@@ -16,7 +16,7 @@ module.exports = function (app) {
     if (!passwordValidation)
       return res.status(401).send({ error: "Invalid email or password" });
 
-    const user = { email: email };
+    const user = { email: email, id: foundUser.id };
     const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
 
@@ -31,8 +31,6 @@ module.exports = function (app) {
       })
       .status(200)
       .json({
-        accessToken: accessToken,
-        refreshToken: refreshToken,
         message: "Logged successfully",
       });
   });
@@ -56,18 +54,22 @@ module.exports = function (app) {
 
   app.get("/refresh_token", (req, res) => {
     const refreshToken = req.cookies.refreshToken;
-    console.log(req.cookies.refreshToken);
     if (refreshToken === null) return res.sendStatus(401);
 
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
       if (err) return res.sendStatus(403);
-      const accessToken = generateAccessToken({ email: user.email });
+
+      const accessToken = generateAccessToken({
+        email: user.email,
+        id: user.id,
+      });
       res
         .cookie("accessToken", accessToken, {
           secure: process.env.NODE_ENV !== "development",
           httpOnly: true,
         })
-        .json({ accessToken: accessToken });
+        .status(200)
+        .json({ message: "Token refreshed" });
     });
   });
 
