@@ -1,61 +1,52 @@
-const { v4 } = require("uuid");
-const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { getConnection } = require("typeorm");
 const { app, authenticateToken } = require("../server");
 const { User } = require("../models/User");
+const { saveUser, getUserByEmail } = require("../services/UserService");
 
 module.exports = function (app) {
   app.post("/login", async (req, res) => {
-    const connection = getConnection();
-    const userRepository = connection.getRepository(User);
     const email = req.body.email;
     const password = req.body.password;
 
-    const foundUser = await userRepository.findOne({ where: { email: email } });
+    const foundUser = await getUserByEmail(email);
     if (!foundUser)
       return res.status(401).send({ error: "Invalid email or password" });
 
-    const passwordValidation = await bcrypt.compare(
-      password,
-      foundUser.password
-    );
+    const passwordValidation = await foundUser.comparePassword(password);
     if (!passwordValidation)
       return res.status(401).send({ error: "Invalid email or password" });
 
-    const user = { email: email };
+    const user = { email: email, id: foundUser.id };
     const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
 
     res
-      .cookie("accessToken", accessToken)
-      .cookie("refreshToken", refreshToken)
+      .cookie("accessToken", accessToken, {
+        secure: process.env.NODE_ENV !== "development",
+        httpOnly: true,
+      })
+      .cookie("refreshToken", refreshToken, {
+        secure: process.env.NODE_ENV !== "development",
+        httpOnly: true,
+      })
       .status(200)
       .json({
-        accessToken: accessToken,
-        refreshToken: refreshToken,
         message: "Logged successfully",
       });
   });
 
   app.post("/register", async (req, res) => {
-    const connection = getConnection();
-    const userRepository = connection.getRepository(User);
     const name = req.body.name;
     const surname = req.body.surname;
     const email = req.body.email;
     const password = req.body.password;
 
-    if ((await userRepository.find({ where: { email } })).length)
+    if (await getUserByEmail(email))
       return res
         .status(400)
         .send({ error: "User with that email already exists!" });
 
-    const hashedPassword = bcrypt.hashSync(password, 10);
-    const id = v4();
-    const newUser = new User(id, name, surname, email, hashedPassword);
-
-    const result = await userRepository.save(newUser);
+    const result = await saveUser(name, surname, email, password);
     if (result)
       return res.status(200).send({ message: "Account created successfully!" });
     return res.status(400).send({ error: "Error during signing up process" });
@@ -63,13 +54,22 @@ module.exports = function (app) {
 
   app.get("/refresh_token", (req, res) => {
     const refreshToken = req.cookies.refreshToken;
-    console.log(req.cookies.refreshToken);
     if (refreshToken === null) return res.sendStatus(401);
 
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
       if (err) return res.sendStatus(403);
-      const accessToken = generateAccessToken({ email: user.email });
-      res.cookie("accessToken", accessToken).json({ accessToken: accessToken });
+
+      const accessToken = generateAccessToken({
+        email: user.email,
+        id: user.id,
+      });
+      res
+        .cookie("accessToken", accessToken, {
+          secure: process.env.NODE_ENV !== "development",
+          httpOnly: true,
+        })
+        .status(200)
+        .json({ message: "Token refreshed" });
     });
   });
 
