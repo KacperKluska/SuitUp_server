@@ -81,6 +81,10 @@ module.exports = function (app) {
       .json({ message: 'Logged out successfully' });
   });
 
+  app.get('/verify_user', authenticateToken, (req, res) => {
+    res.status(200).json({ message: 'Verified', id: res.user.id });
+  });
+
   function generateAccessToken(user) {
     return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
       expiresIn: '20s',
@@ -90,8 +94,4 @@ module.exports = function (app) {
   function generateRefreshToken(user) {
     return jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
   }
-
-  app.get('/verify_user', authenticateToken, (req, res) => {
-    res.status(200).json({ message: 'Verified' });
-  });
 };
