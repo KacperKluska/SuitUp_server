@@ -43,7 +43,7 @@ module.exports = function (app) {
 
     if (await getUserByEmail(email))
       return res
-        .status(400)
+        .status(405)
         .send({ error: 'User with that email already exists!' });
 
     const result = await saveUser(name, surname, email, password);
@@ -57,7 +57,7 @@ module.exports = function (app) {
     if (refreshToken === null) return res.sendStatus(401);
 
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-      if (err) return res.sendStatus(403);
+      if (err) return res.sendStatus(401);
 
       const accessToken = generateAccessToken({
         email: user.email,
