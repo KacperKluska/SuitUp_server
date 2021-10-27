@@ -1,17 +1,17 @@
-const EntitySchema = require("typeorm").EntitySchema;
-const Pattern = require("../models/Pattern").Pattern;
+const EntitySchema = require('typeorm').EntitySchema;
+const Pattern = require('../models/Pattern').Pattern;
 
 module.exports = new EntitySchema({
-  name: "Pattern",
+  name: 'Pattern',
   target: Pattern,
   columns: {
     id: {
       primary: true,
-      type: "integer",
+      type: 'integer',
       generated: true,
     },
     pattern: {
-      type: "varchar",
+      type: 'varchar',
       unique: true,
       length: 50,
       nullable: false,

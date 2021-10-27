@@ -1,5 +1,5 @@
-const User = require("../models/User").User;
-const getConnection = require("typeorm").getConnection;
+const User = require('../models/User').User;
+const getConnection = require('typeorm').getConnection;
 
 function saveUserDAO(user) {
   const connection = getConnection();

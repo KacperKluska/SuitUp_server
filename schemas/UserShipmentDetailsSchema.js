@@ -1,47 +1,47 @@
-const EntitySchema = require("typeorm").EntitySchema;
+const EntitySchema = require('typeorm').EntitySchema;
 const UserShipmentDetails =
-  require("../models/UserShipmentDetails").UserShipmentDetails;
+  require('../models/UserShipmentDetails').UserShipmentDetails;
 
 module.exports = new EntitySchema({
-  name: "UserShipmentDetails",
+  name: 'UserShipmentDetails',
   target: UserShipmentDetails,
   columns: {
     id: {
       primary: true,
-      type: "uuid",
+      type: 'uuid',
     },
     country: {
-      type: "varchar",
+      type: 'varchar',
       length: 50,
       nullable: false,
     },
     city: {
-      type: "varchar",
+      type: 'varchar',
       length: 50,
       nullable: false,
     },
     street: {
-      type: "varchar",
+      type: 'varchar',
       length: 50,
       nullable: false,
     },
     house_number: {
-      type: "varchar",
+      type: 'varchar',
       length: 50,
       nullable: false,
     },
     phone_number: {
-      type: "varchar",
+      type: 'varchar',
       length: 15,
       nullable: false,
     },
   },
   relations: {
     users: {
-      target: "User",
-      type: "many-to-one",
+      target: 'User',
+      type: 'many-to-one',
       joinColumn: true,
-      onDelete: "CASCADE",
+      onDelete: 'CASCADE',
     },
   },
 });

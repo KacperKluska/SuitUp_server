@@ -1,38 +1,38 @@
-const EntitySchema = require("typeorm").EntitySchema;
-const Order = require("../models/Order").Order;
+const EntitySchema = require('typeorm').EntitySchema;
+const Order = require('../models/Order').Order;
 
 module.exports = new EntitySchema({
-  name: "Order",
+  name: 'Order',
   target: Order,
   columns: {
     id: {
-      type: "uuid",
+      type: 'uuid',
       primary: true,
     },
     filling_date: {
-      type: "date",
+      type: 'date',
       nullable: false,
     },
     provide_date: {
-      type: "date",
+      type: 'date',
     },
     price: {
-      type: "decimal",
+      type: 'decimal',
       nullable: false,
     },
   },
   relations: {
     users: {
-      target: "User",
-      type: "many-to-one",
+      target: 'User',
+      type: 'many-to-one',
       joinColumn: true,
-      onDelete: "CASCADE",
+      onDelete: 'CASCADE',
     },
     cartItems: {
-      target: "CartItem",
-      type: "many-to-one",
+      target: 'CartItem',
+      type: 'many-to-one',
       joinColumn: true,
-      onDelete: "CASCADE",
+      onDelete: 'CASCADE',
     },
   },
 });
