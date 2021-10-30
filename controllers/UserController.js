@@ -1,7 +1,11 @@
 const jwt = require('jsonwebtoken');
 const { app, authenticateToken } = require('../server');
 const { User } = require('../models/User');
-const { saveUser, getUserByEmail } = require('../services/UserService');
+const {
+  saveUser,
+  getUserByEmail,
+  getUserData,
+} = require('../services/UserService');
 
 module.exports = function (app) {
   app.post('/login', async (req, res) => {
@@ -93,5 +97,11 @@ module.exports = function (app) {
 
   app.get('/verify_user', authenticateToken, (req, res) => {
     res.status(200).json({ message: 'Verified' });
+  });
+
+  app.get('/user', authenticateToken, async (req, res) => {
+    const result = await getUserData(req.query.id);
+    if (result) return res.status(200).json(result);
+    return res.status(400).json({ error: 'Server error' });
   });
 };
