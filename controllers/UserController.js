@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
 const { app, authenticateToken } = require('../server');
-const { User } = require('../models/User');
 const {
   saveUser,
   getUserByEmail,
