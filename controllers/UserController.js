@@ -97,10 +97,4 @@ module.exports = function (app) {
   function generateRefreshToken(user) {
     return jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
   }
-
-  app.get('/user', authenticateToken, async (req, res) => {
-    const result = await getUserData(req.query.id);
-    if (result) return res.status(200).json(result);
-    return res.status(400).json({ error: 'Server error' });
-  });
 };

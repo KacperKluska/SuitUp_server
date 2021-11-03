@@ -53,4 +53,10 @@ module.exports = function (app) {
     if (result) return res.status(200).send({ message: 'Success' });
     return res.status(400).send({ error: 'Failure' });
   });
+
+  app.get('/account/user_data', authenticateToken, async (req, res) => {
+    const result = await getUserData(req.query.id);
+    if (result) return res.status(200).json(result);
+    return res.status(400).json({ error: 'Server error' });
+  });
 };
