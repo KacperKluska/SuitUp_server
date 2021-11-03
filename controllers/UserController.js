@@ -1,10 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { app, authenticateToken } = require('../server');
-const {
-  saveUser,
-  getUserByEmail,
-  getUserData,
-} = require('../services/UserService');
+const { saveUser, getUserByEmail } = require('../services/UserService');
 
 module.exports = function (app) {
   app.post('/login', async (req, res) => {

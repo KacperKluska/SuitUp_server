@@ -4,6 +4,7 @@ const {
   getUserShipmentDetails,
   updateAllUserShipmentDetails,
 } = require('../services/UserShipmentDetailsService');
+const { getUserData } = require('../services/UserService');
 
 module.exports = function (app) {
   app.get('/account/shipment_data', authenticateToken, async (req, res) => {
