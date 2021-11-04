@@ -27,6 +27,7 @@ app.listen(PORT, async (error) => {
     console.log(`Server started at port ${PORT}`);
     connection = await connect();
     require('./Controllers/UserController')(app);
+    require('./Controllers/UserShipmentDetailsController')(app);
   }
 });
 

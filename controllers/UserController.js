@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
 const { app, authenticateToken } = require('../server');
-const { User } = require('../models/User');
 const { saveUser, getUserByEmail } = require('../services/UserService');
 
 module.exports = function (app) {
@@ -21,13 +20,13 @@ module.exports = function (app) {
     const refreshToken = generateRefreshToken(user);
 
     res
-      .cookie('accessToken', accessToken, {
-        secure: process.env.NODE_ENV !== 'development',
+      .cookie('access_token', accessToken, {
         httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
       })
-      .cookie('refreshToken', refreshToken, {
-        secure: process.env.NODE_ENV !== 'development',
+      .cookie('refresh_token', refreshToken, {
         httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
       })
       .status(200)
       .json({
@@ -65,8 +64,8 @@ module.exports = function (app) {
       });
       res
         .cookie('accessToken', accessToken, {
-          secure: process.env.NODE_ENV !== 'development',
           httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
         })
         .status(200)
         .json({ message: 'Token refreshed' });
