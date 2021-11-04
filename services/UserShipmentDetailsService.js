@@ -1,11 +1,10 @@
+const { v4 } = require('uuid');
 const {
   saveUserShipmentDetailsDAO,
   getUserShipmentDetailsDAO,
   updateUserShipmentDetailsDAO,
 } = require('../dao/UserShipmentDetailsDao');
-const UserShipmentDetails =
-  require('../models/UserShipmentDetails').UserShipmentDetails;
-const { v4 } = require('uuid');
+const { UserShipmentDetails } = require('../models/UserShipmentDetails');
 
 async function saveUserShipmentDetails(
   country,
@@ -55,11 +54,11 @@ async function updateAllUserShipmentDetails(
 ) {
   try {
     const newData = {
-      country: country,
-      city: city,
-      street: street,
-      house_number: house_number,
-      phone_number: phone_number,
+      country,
+      city,
+      street,
+      house_number,
+      phone_number,
     };
     return await updateUserShipmentDetailsDAO(userId, newData);
   } catch (err) {}

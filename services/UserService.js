@@ -1,11 +1,11 @@
 const bcrypt = require('bcrypt');
+const { v4 } = require('uuid');
 const {
   getUserByEmailDAO,
   saveUserDAO,
   getUserByIdDAO,
 } = require('../dao/UserDao');
-const { v4 } = require('uuid');
-const User = require('../models/User').User;
+const { User } = require('../models/User');
 
 async function getUserByEmail(email) {
   try {
