@@ -8,20 +8,21 @@ async function getUserByEmail(email) {
     return await getUserByEmailDAO(email);
   } catch (error) {
     console.log(error);
+    return null;
   }
 }
 
 async function saveUser(name, surname, email, password) {
   try {
-    const user = new User();
-    user.id = v4();
-    user.name = name;
-    user.surname = surname;
-    user.email = email;
-    user.password = await bcrypt.hash(password, 10);
-    return await saveUserDAO(user);
+    const user = new User(
+      name,
+      surname,
+      email,
+      await bcrypt.hash(password, 10),
+    );
+    return saveUserDAO(user);
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 }
 

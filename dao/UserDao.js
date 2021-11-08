@@ -1,5 +1,5 @@
-const User = require('../models/User').User;
-const getConnection = require('typeorm').getConnection;
+const { getConnection } = require('typeorm');
+const { User } = require('../models/User');
 
 function saveUserDAO(user) {
   const connection = getConnection();
@@ -10,7 +10,7 @@ function saveUserDAO(user) {
 function getUserByEmailDAO(email) {
   const connection = getConnection();
   const userRepository = connection.getRepository(User);
-  return userRepository.findOne({ email: email });
+  return userRepository.findOne({ email });
 }
 
 module.exports = {

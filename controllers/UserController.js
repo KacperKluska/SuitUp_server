@@ -1,12 +1,20 @@
 const jwt = require('jsonwebtoken');
-const { app, authenticateToken } = require('../server');
-const { User } = require('../models/User');
+const { authenticateToken } = require('../server');
 const { saveUser, getUserByEmail } = require('../services/UserService');
+
+function generateAccessToken(user) {
+  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: '20s',
+  });
+}
+
+function generateRefreshToken(user) {
+  return jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1d' });
+}
 
 module.exports = function (app) {
   app.post('/login', async (req, res) => {
-    const email = req.body.email;
-    const password = req.body.password;
+    const { email, password } = req.body;
 
     const foundUser = await getUserByEmail(email);
     if (!foundUser)
@@ -16,11 +24,11 @@ module.exports = function (app) {
     if (!passwordValidation)
       return res.status(401).send({ error: 'Invalid email or password' });
 
-    const user = { email: email, id: foundUser.id };
+    const user = { email, id: foundUser.id };
     const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
 
-    res
+    return res
       .cookie('accessToken', accessToken, {
         secure: process.env.NODE_ENV !== 'development',
         httpOnly: true,
@@ -36,10 +44,7 @@ module.exports = function (app) {
   });
 
   app.post('/register', async (req, res) => {
-    const name = req.body.name;
-    const surname = req.body.surname;
-    const email = req.body.email;
-    const password = req.body.password;
+    const { name, surname, email, password } = req.body.name;
 
     if (await getUserByEmail(email))
       return res
@@ -53,24 +58,29 @@ module.exports = function (app) {
   });
 
   app.get('/refresh_token', (req, res) => {
-    const refreshToken = req.cookies.refreshToken;
+    const { refreshToken } = req.cookies;
     if (refreshToken === null) return res.sendStatus(401);
 
-    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-      if (err) return res.sendStatus(401);
+    return jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN_SECRET,
+      (err, user) => {
+        if (err) return res.sendStatus(401);
 
-      const accessToken = generateAccessToken({
-        email: user.email,
-        id: user.id,
-      });
-      res
-        .cookie('accessToken', accessToken, {
-          secure: process.env.NODE_ENV !== 'development',
-          httpOnly: true,
-        })
-        .status(200)
-        .json({ message: 'Token refreshed' });
-    });
+        const accessToken = generateAccessToken({
+          email: user.email,
+          id: user.id,
+        });
+
+        return res
+          .cookie('accessToken', accessToken, {
+            secure: process.env.NODE_ENV !== 'development',
+            httpOnly: true,
+          })
+          .status(200)
+          .json({ message: 'Token refreshed' });
+      },
+    );
   });
 
   app.delete('/logout', (req, res) => {
@@ -84,14 +94,4 @@ module.exports = function (app) {
   app.get('/verify_user', authenticateToken, (req, res) => {
     res.status(200).json({ message: 'Verified', id: res.user.id });
   });
-
-  function generateAccessToken(user) {
-    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-      expiresIn: '20s',
-    });
-  }
-
-  function generateRefreshToken(user) {
-    return jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
-  }
 };
