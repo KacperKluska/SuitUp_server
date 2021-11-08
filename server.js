@@ -1,10 +1,12 @@
 require('dotenv').config();
 
 const express = require('express');
+
 const app = express();
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+
 const corsOptions = {
   origin: 'http://localhost:3000',
   credentials: true,
@@ -27,6 +29,7 @@ app.listen(PORT, async (error) => {
     console.log(`Server started at port ${PORT}`);
     connection = await connect();
     require('./Controllers/UserController')(app);
+    require('./Controllers/UserShipmentDetailsController')(app);
   }
 });
 

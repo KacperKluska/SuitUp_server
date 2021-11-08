@@ -13,7 +13,14 @@ function getUserByEmailDAO(email) {
   return userRepository.findOne({ email });
 }
 
+function getUserByIdDAO(id) {
+  const connection = getConnection();
+  const userRepository = connection.getRepository(User);
+  return userRepository.findOne({ id });
+}
+
 module.exports = {
   saveUserDAO,
   getUserByEmailDAO,
+  getUserByIdDAO,
 };

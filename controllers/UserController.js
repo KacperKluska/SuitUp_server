@@ -9,7 +9,7 @@ function generateAccessToken(user) {
 }
 
 function generateRefreshToken(user) {
-  return jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1d' });
+  return jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
 }
 
 module.exports = function (app) {
@@ -29,13 +29,13 @@ module.exports = function (app) {
     const refreshToken = generateRefreshToken(user);
 
     return res
-      .cookie('accessToken', accessToken, {
-        secure: process.env.NODE_ENV !== 'development',
+      .cookie('access_token', accessToken, {
         httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
       })
-      .cookie('refreshToken', refreshToken, {
-        secure: process.env.NODE_ENV !== 'development',
+      .cookie('refresh_token', refreshToken, {
         httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
       })
       .status(200)
       .json({
@@ -44,7 +44,7 @@ module.exports = function (app) {
   });
 
   app.post('/register', async (req, res) => {
-    const { name, surname, email, password } = req.body.name;
+    const { name, surname, email, password } = req.body;
 
     if (await getUserByEmail(email))
       return res
@@ -67,20 +67,19 @@ module.exports = function (app) {
       (err, user) => {
         if (err) return res.sendStatus(401);
 
-        const accessToken = generateAccessToken({
-          email: user.email,
-          id: user.id,
-        });
-
-        return res
-          .cookie('accessToken', accessToken, {
-            secure: process.env.NODE_ENV !== 'development',
-            httpOnly: true,
-          })
-          .status(200)
-          .json({ message: 'Token refreshed' });
-      },
-    );
+      const accessToken = generateAccessToken({
+        email: user.email,
+        id: user.id,
+      });
+      return res
+        .cookie('accessToken', accessToken, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+        })
+        .status(200)
+        .json({ message: 'Token refreshed' });
+    });
+    return null;
   });
 
   app.delete('/logout', (req, res) => {

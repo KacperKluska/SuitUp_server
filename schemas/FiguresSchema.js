@@ -1,5 +1,5 @@
-const EntitySchema = require('typeorm').EntitySchema;
-const Figure = require('../models/Figure').Figure;
+const { EntitySchema } = require('typeorm');
+const { Figure } = require('../models/Figure');
 
 module.exports = new EntitySchema({
   name: 'Figure',

@@ -1,7 +1,11 @@
 const bcrypt = require('bcrypt');
-const { getUserByEmailDAO, saveUserDAO } = require('../dao/UserDao');
 const { v4 } = require('uuid');
-const User = require('../models/User').User;
+const {
+  getUserByEmailDAO,
+  saveUserDAO,
+  getUserByIdDAO,
+} = require('../dao/UserDao');
+const { User } = require('../models/User');
 
 async function getUserByEmail(email) {
   try {
@@ -26,7 +30,15 @@ async function saveUser(name, surname, email, password) {
   }
 }
 
+async function getUserData(id) {
+  const result = await getUserByIdDAO(id);
+  if (result)
+    return { name: result.name, surname: result.surname, email: result.email };
+  return null;
+}
+
 module.exports = {
   getUserByEmail,
   saveUser,
+  getUserData,
 };
