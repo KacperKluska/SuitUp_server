@@ -1,4 +1,4 @@
-const { app, authenticateToken } = require('../server');
+const { authenticateToken } = require('../server');
 const {
   saveUserShipmentDetails,
   getUserShipmentDetails,
@@ -16,11 +16,7 @@ module.exports = function (app) {
   });
 
   app.post('/account/shipment_data', authenticateToken, async (req, res) => {
-    const country = req.body.country;
-    const city = req.body.city;
-    const street = req.body.street;
-    const house_number = req.body.house_number;
-    const phone_number = req.body.phone_number;
+    const { country, city, street, house_number, phone_number } = req.body;
     const user_id = req.user.id;
 
     const result = await saveUserShipmentDetails(
@@ -36,11 +32,7 @@ module.exports = function (app) {
   });
 
   app.patch('/account/shipment_data', authenticateToken, async (req, res) => {
-    const country = req.body.country;
-    const city = req.body.city;
-    const street = req.body.street;
-    const house_number = req.body.house_number;
-    const phone_number = req.body.phone_number;
+    const { country, city, street, house_number, phone_number } = req.body;
     const user_id = req.user.id;
 
     const result = await updateAllUserShipmentDetails(

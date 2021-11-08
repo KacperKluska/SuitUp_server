@@ -1,5 +1,5 @@
-const EntitySchema = require('typeorm').EntitySchema;
-const Pattern = require('../models/Pattern').Pattern;
+const { EntitySchema } = require('typeorm');
+const { Pattern } = require('../models/Pattern');
 
 module.exports = new EntitySchema({
   name: 'Pattern',

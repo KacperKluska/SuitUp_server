@@ -1,5 +1,5 @@
-const EntitySchema = require('typeorm').EntitySchema;
-const Color = require('../models/Color').Color;
+const { EntitySchema } = require('typeorm');
+const { Color } = require('../models/Color');
 
 module.exports = new EntitySchema({
   name: 'Color',

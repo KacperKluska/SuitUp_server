@@ -1,6 +1,5 @@
-const UserShipmentDetails =
-  require('../models/UserShipmentDetails').UserShipmentDetails;
-const getConnection = require('typeorm').getConnection;
+const { getConnection } = require('typeorm');
+const { UserShipmentDetails } = require('../models/UserShipmentDetails');
 
 function saveUserShipmentDetailsDAO(userShipmentDetails) {
   const connection = getConnection();

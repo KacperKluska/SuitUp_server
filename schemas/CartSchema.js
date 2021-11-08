@@ -1,5 +1,5 @@
-const EntitySchema = require('typeorm').EntitySchema;
-const Cart = require('../models/Cart').Cart;
+const { EntitySchema } = require('typeorm');
+const { Cart } = require('../models/Cart');
 
 module.exports = new EntitySchema({
   name: 'Cart',
