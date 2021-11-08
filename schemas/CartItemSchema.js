@@ -8,6 +8,7 @@ module.exports = new EntitySchema({
     id: {
       primary: true,
       type: 'uuid',
+      generated: 'uuid',
     },
     quantity: {
       type: 'integer',

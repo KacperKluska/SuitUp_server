@@ -1,4 +1,3 @@
-const { v4 } = require('uuid');
 const {
   saveUserShipmentDetailsDAO,
   getUserShipmentDetailsDAO,
@@ -16,7 +15,7 @@ async function saveUserShipmentDetails(
 ) {
   try {
     const userDetails = new UserShipmentDetails();
-    userDetails.id = v4();
+    userDetails.id = null;
     userDetails.country = country;
     userDetails.city = city;
     userDetails.street = street;
