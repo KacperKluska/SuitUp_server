@@ -32,25 +32,25 @@ module.exports = new EntitySchema({
   relations: {
     figures: {
       target: 'Figure',
-      type: 'one-to-one',
+      type: 'many-to-one',
       joinColumn: true,
       onDelete: 'CASCADE',
     },
     product_types: {
       target: 'ProductType',
-      type: 'one-to-one',
+      type: 'many-to-one',
       joinColumn: true,
       onDelete: 'CASCADE',
     },
     colors: {
       target: 'Color',
-      type: 'one-to-one',
+      type: 'many-to-one',
       joinColumn: true,
       onDelete: 'CASCADE',
     },
     patterns: {
       target: 'Pattern',
-      type: 'one-to-one',
+      type: 'many-to-one',
       joinColumn: true,
       onDelete: 'CASCADE',
     },
