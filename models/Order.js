@@ -4,8 +4,8 @@ class Order {
     this.filling_date = filling_date;
     this.provide_date = provide_date;
     this.price = price;
-    this.product_id = product_id;
-    this.user_id = user_id;
+    this.products = product_id;
+    this.users = user_id;
   }
 }
 

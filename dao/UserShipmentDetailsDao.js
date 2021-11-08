@@ -12,14 +12,14 @@ function getUserShipmentDetailsDAO(userId) {
   const connection = getConnection();
   const userShipmentDetailsRepository =
     connection.getRepository(UserShipmentDetails);
-  return userShipmentDetailsRepository.findOne({ user_id: userId });
+  return userShipmentDetailsRepository.findOne({ users: userId });
 }
 
 function updateUserShipmentDetailsDAO(userId, newData) {
   const connection = getConnection();
   const userShipmentDetailsRepository =
     connection.getRepository(UserShipmentDetails);
-  return userShipmentDetailsRepository.update({ user_id: userId }, newData);
+  return userShipmentDetailsRepository.update({ users: userId }, newData);
 }
 
 module.exports = {

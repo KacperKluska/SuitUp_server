@@ -3,7 +3,7 @@ class Opinion {
     this.id = id;
     this.rate = rate;
     this.comment = comment;
-    this.product_id = product_id;
+    this.products = product_id;
   }
 }
 
