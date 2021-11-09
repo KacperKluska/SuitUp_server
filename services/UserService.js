@@ -10,8 +10,8 @@ const { User } = require('../models/User');
 async function getUserByEmail(email) {
   try {
     return await getUserByEmailDAO(email);
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.log(err);
   }
 }
 
@@ -24,16 +24,24 @@ async function saveUser(name, surname, email, password) {
     user.email = email;
     user.password = await bcrypt.hash(password, 10);
     return await saveUserDAO(user);
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.log(err);
   }
 }
 
 async function getUserData(id) {
-  const result = await getUserByIdDAO(id);
-  if (result)
-    return { name: result.name, surname: result.surname, email: result.email };
-  return null;
+  try {
+    const result = await getUserByIdDAO(id);
+    if (result)
+      return {
+        name: result.name,
+        surname: result.surname,
+        email: result.email,
+      };
+    return null;
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 module.exports = {

@@ -23,13 +23,17 @@ const PORT = 3001;
 let connection;
 
 app.listen(PORT, async (error) => {
-  if (error) {
-    console.log('There was an error while staring a server!');
-  } else {
-    console.log(`Server started at port ${PORT}`);
-    connection = await connect();
-    require('./Controllers/UserController')(app);
-    require('./Controllers/UserShipmentDetailsController')(app);
+  try {
+    if (error) {
+      console.log('There was an error while staring a server!');
+    } else {
+      console.log(`Server started at port ${PORT}`);
+      connection = await connect();
+      require('./Controllers/UserController')(app);
+      require('./Controllers/UserShipmentDetailsController')(app);
+    }
+  } catch (err) {
+    console.error(err);
   }
 });
 

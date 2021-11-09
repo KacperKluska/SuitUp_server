@@ -14,47 +14,57 @@ function generateRefreshToken(user) {
 
 module.exports = function (app) {
   app.post('/login', async (req, res) => {
-    const { email, password } = req.body;
+    try {
+      const { email, password } = req.body;
 
-    const foundUser = await getUserByEmail(email);
-    if (!foundUser)
-      return res.status(401).send({ error: 'Invalid email or password' });
+      const foundUser = await getUserByEmail(email);
+      if (!foundUser)
+        return res.status(401).send({ error: 'Invalid email or password' });
 
-    const passwordValidation = await foundUser.comparePassword(password);
-    if (!passwordValidation)
-      return res.status(401).send({ error: 'Invalid email or password' });
+      const passwordValidation = await foundUser.comparePassword(password);
+      if (!passwordValidation)
+        return res.status(401).send({ error: 'Invalid email or password' });
 
-    const user = { email, id: foundUser.id };
-    const accessToken = generateAccessToken(user);
-    const refreshToken = generateRefreshToken(user);
+      const user = { email, id: foundUser.id };
+      const accessToken = generateAccessToken(user);
+      const refreshToken = generateRefreshToken(user);
 
-    return res
-      .cookie('access_token', accessToken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-      })
-      .cookie('refresh_token', refreshToken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-      })
-      .status(200)
-      .json({
-        message: 'Logged successfully',
-      });
+      return res
+        .cookie('access_token', accessToken, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+        })
+        .cookie('refresh_token', refreshToken, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+        })
+        .status(200)
+        .json({
+          message: 'Logged successfully',
+        });
+    } catch (err) {
+      console.error(err);
+    }
   });
 
   app.post('/register', async (req, res) => {
-    const { name, surname, email, password } = req.body;
+    try {
+      const { name, surname, email, password } = req.body;
 
-    if (await getUserByEmail(email))
-      return res
-        .status(405)
-        .send({ error: 'User with that email already exists!' });
+      if (await getUserByEmail(email))
+        return res
+          .status(405)
+          .send({ error: 'User with that email already exists!' });
 
-    const result = await saveUser(name, surname, email, password);
-    if (result)
-      return res.status(200).send({ message: 'Account created successfully!' });
-    return res.status(400).send({ error: 'Error during signing up process' });
+      const result = await saveUser(name, surname, email, password);
+      if (result)
+        return res
+          .status(200)
+          .send({ message: 'Account created successfully!' });
+      return res.status(400).send({ error: 'Error during signing up process' });
+    } catch (err) {
+      console.error(err);
+    }
   });
 
   app.get('/refresh_token', (req, res) => {
