@@ -14,8 +14,7 @@ function generateRefreshToken(user) {
 
 module.exports = function (app) {
   app.post('/login', async (req, res) => {
-    const { email } = req.body;
-    const { password } = req.body;
+    const { email, password } = req.body;
 
     const foundUser = await getUserByEmail(email);
     if (!foundUser)
@@ -45,10 +44,7 @@ module.exports = function (app) {
   });
 
   app.post('/register', async (req, res) => {
-    const { name } = req.body;
-    const { surname } = req.body;
-    const { email } = req.body;
-    const { password } = req.body;
+    const { name, surname, email, password } = req.body;
 
     if (await getUserByEmail(email))
       return res
@@ -65,22 +61,25 @@ module.exports = function (app) {
     const { refreshToken } = req.cookies;
     if (refreshToken === null) return res.sendStatus(401);
 
-    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-      if (err) return res.sendStatus(401);
+    return jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN_SECRET,
+      (err, user) => {
+        if (err) return res.sendStatus(401);
 
-      const accessToken = generateAccessToken({
-        email: user.email,
-        id: user.id,
-      });
-      return res
-        .cookie('accessToken', accessToken, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-        })
-        .status(200)
-        .json({ message: 'Token refreshed' });
-    });
-    return null;
+        const accessToken = generateAccessToken({
+          email: user.email,
+          id: user.id,
+        });
+        return res
+          .cookie('accessToken', accessToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+          })
+          .status(200)
+          .json({ message: 'Token refreshed' });
+      },
+    );
   });
 
   app.delete('/logout', (req, res) => {
