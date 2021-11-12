@@ -1,4 +1,3 @@
-const { v4 } = require('uuid');
 const {
   saveUserShipmentDetailsDAO,
   getUserShipmentDetailsDAO,
@@ -16,13 +15,13 @@ async function saveUserShipmentDetails(
 ) {
   try {
     const userDetails = new UserShipmentDetails();
-    userDetails.id = v4();
+    userDetails.id = null;
     userDetails.country = country;
     userDetails.city = city;
     userDetails.street = street;
     userDetails.house_number = house_number;
     userDetails.phone_number = phone_number;
-    userDetails.user_id = user_id;
+    userDetails.users = user_id;
     return await saveUserShipmentDetailsDAO(userDetails);
   } catch (err) {
     console.error(err);

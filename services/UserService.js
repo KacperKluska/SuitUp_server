@@ -1,5 +1,4 @@
 const bcrypt = require('bcrypt');
-const { v4 } = require('uuid');
 const {
   getUserByEmailDAO,
   saveUserDAO,
@@ -18,7 +17,6 @@ async function getUserByEmail(email) {
 async function saveUser(name, surname, email, password) {
   try {
     const user = new User();
-    user.id = v4();
     user.name = name;
     user.surname = surname;
     user.email = email;

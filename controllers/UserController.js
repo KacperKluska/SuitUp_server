@@ -68,8 +68,8 @@ module.exports = function (app) {
   });
 
   app.get('/refresh_token', (req, res) => {
-    const { refreshToken } = req.cookies;
-    if (refreshToken === null) return res.sendStatus(401);
+    const { refresh_token } = req.cookies;
+    if (refresh_token === null) return res.sendStatus(401);
 
     return jwt.verify(
       refreshToken,
@@ -82,7 +82,7 @@ module.exports = function (app) {
           id: user.id,
         });
         return res
-          .cookie('accessToken', accessToken, {
+          .cookie('access_token', accessToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
           })
@@ -94,13 +94,13 @@ module.exports = function (app) {
 
   app.delete('/logout', (req, res) => {
     return res
-      .clearCookie('accessToken')
-      .clearCookie('refreshToken')
+      .clearCookie('access_token')
+      .clearCookie('refresh_token')
       .status(200)
       .json({ message: 'Logged out successfully' });
   });
 
   app.get('/verify_user', authenticateToken, (req, res) => {
-    res.status(200).json({ message: 'Verified', id: res.user.id });
+    res.status(200).json({ message: 'Verified', id: req.user.id });
   });
 };
