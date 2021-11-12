@@ -1,3 +1,4 @@
+const { createConnection } = require('typeorm');
 require('dotenv').config();
 
 const express = require('express');
@@ -17,8 +18,6 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors(corsOptions));
 
-const { connect } = require('./database/connect');
-
 const PORT = 3001;
 let connection;
 
@@ -26,15 +25,19 @@ app.listen(PORT, async (error) => {
   if (error) {
     console.log('There was an error while staring a server!');
   } else {
-    console.log(`Server started at port ${PORT}`);
-    connection = await connect();
-    require('./Controllers/UserController')(app);
-    require('./Controllers/UserShipmentDetailsController')(app);
+    try {
+      console.log(`Server started at port ${PORT}`);
+      connection = await createConnection();
+      require('./Controllers/UserController')(app);
+      require('./Controllers/UserShipmentDetailsController')(app);
+    } catch (err) {
+      console.error(err);
+    }
   }
 });
 
 function authenticateToken(req, res, next) {
-  const token = req.cookies.accessToken;
+  const token = req.cookies.access_token;
   if (token == null) return res.sendStatus(401);
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {

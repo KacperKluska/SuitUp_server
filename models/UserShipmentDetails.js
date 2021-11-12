@@ -6,7 +6,7 @@ class UserShipmentDetails {
     this.street = street;
     this.house_number = house_number;
     this.phone_number = phone_number;
-    this.user_id = user_id;
+    this.users = user_id;
   }
 }
 

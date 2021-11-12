@@ -6,6 +6,7 @@ module.exports = new EntitySchema({
   target: User,
   columns: {
     id: {
+      generated: 'uuid',
       primary: true,
       type: 'uuid',
     },
