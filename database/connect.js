@@ -11,7 +11,7 @@ async function connect() {
       username: process.env.POSTGRESQL_USER,
       password: process.env.POSTGRESQL_PASSWORD,
       database: 'SuitUp',
-      synchronize: true,
+      synchronize: false,
       logging: false,
       entities: [
         require('../schemas/CartItemSchema'),
