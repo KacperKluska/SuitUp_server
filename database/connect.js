@@ -13,6 +13,11 @@ async function connect() {
       database: 'SuitUp',
       synchronize: false,
       logging: false,
+      migrationsTableName: 'migration_table',
+      migrations: ['../migrations/*.js'],
+      cli: {
+        migrationsDir: '../migrations',
+      },
       entities: [
         require('../schemas/CartItemSchema'),
         require('../schemas/CartSchema'),
