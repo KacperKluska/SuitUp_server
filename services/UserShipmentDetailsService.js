@@ -24,7 +24,7 @@ async function saveUserShipmentDetails(
     userDetails.users = user_id;
     return await saveUserShipmentDetailsDAO(userDetails);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 }
 
@@ -40,7 +40,9 @@ async function getUserShipmentDetails(userId) {
         phone_number: userDetails.phone_number,
       };
     }
-  } catch (err) {}
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 async function updateAllUserShipmentDetails(
@@ -60,7 +62,9 @@ async function updateAllUserShipmentDetails(
       phone_number,
     };
     return await updateUserShipmentDetailsDAO(userId, newData);
-  } catch (err) {}
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 module.exports = {
