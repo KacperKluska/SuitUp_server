@@ -18,19 +18,7 @@ async function connect() {
       cli: {
         migrationsDir: '../migrations',
       },
-      entities: [
-        require('../schemas/CartItemSchema'),
-        require('../schemas/CartSchema'),
-        require('../schemas/ColorSchema'),
-        require('../schemas/FiguresSchema'),
-        require('../schemas/OpinionSchema'),
-        require('../schemas/OrderSchema'),
-        require('../schemas/PatternSchema'),
-        require('../schemas/ProductSchema'),
-        require('../schemas/ProductTypeSchema'),
-        require('../schemas/UserSchema'),
-        require('../schemas/UserShipmentDetailsSchema'),
-      ],
+      entities: ['../schemas/*.js'],
     });
   } catch (error) {
     console.log(`Couldn't connect to the database. ${error}`);
