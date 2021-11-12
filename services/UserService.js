@@ -17,7 +17,6 @@ async function getUserByEmail(email) {
 async function saveUser(name, surname, email, password) {
   try {
     const user = new User();
-    user.id = null;
     user.name = name;
     user.surname = surname;
     user.email = email;
