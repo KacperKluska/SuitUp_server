@@ -73,7 +73,7 @@ module.exports = function (app) {
         id: user.id,
       });
       return res
-        .cookie('accessToken', accessToken, {
+        .cookie('access_token', accessToken, {
           httpOnly: true,
           secure: process.env.NODE_ENV === 'production',
         })
@@ -85,8 +85,8 @@ module.exports = function (app) {
 
   app.delete('/logout', (req, res) => {
     return res
-      .clearCookie('accessToken')
-      .clearCookie('refreshToken')
+      .clearCookie('access_token')
+      .clearCookie('refresh_token')
       .status(200)
       .json({ message: 'Logged out successfully' });
   });
