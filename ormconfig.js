@@ -7,7 +7,7 @@ module.exports = {
   username: process.env.POSTGRESQL_USER,
   password: process.env.POSTGRESQL_PASSWORD,
   database: 'SuitUpDB',
-  synchronize: true,
+  synchronize: false,
   logging: false,
   migrationsTableName: 'migration_table',
   migrations: ['migrations/*.js'],
