@@ -62,10 +62,10 @@ module.exports = function (app) {
   });
 
   app.get('/refresh_token', (req, res) => {
-    const { refreshToken } = req.cookies;
-    if (refreshToken === null) return res.sendStatus(401);
+    const { refresh_token } = req.cookies;
+    if (refresh_token === null) return res.sendStatus(401);
 
-    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+    jwt.verify(refresh_token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
       if (err) return res.sendStatus(401);
 
       const accessToken = generateAccessToken({
@@ -92,6 +92,6 @@ module.exports = function (app) {
   });
 
   app.get('/verify_user', authenticateToken, (req, res) => {
-    res.status(200).json({ message: 'Verified', id: res.user.id });
+    res.status(200).json({ message: 'Verified', id: req.user.id });
   });
 };

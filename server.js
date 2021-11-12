@@ -37,7 +37,7 @@ app.listen(PORT, async (error) => {
 });
 
 function authenticateToken(req, res, next) {
-  const token = req.cookies.accessToken;
+  const token = req.cookies.access_token;
   if (token == null) return res.sendStatus(401);
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
