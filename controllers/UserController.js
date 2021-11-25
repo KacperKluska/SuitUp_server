@@ -16,7 +16,6 @@ module.exports = function (app) {
   app.post('/login', async (req, res) => {
     try {
       const { email, password } = req.body;
-
       const foundUser = await getUserByEmail(email);
       if (!foundUser)
         return res.status(401).send({ error: 'Invalid email or password' });
@@ -72,7 +71,7 @@ module.exports = function (app) {
     if (refresh_token === null) return res.sendStatus(401);
 
     return jwt.verify(
-      refreshToken,
+      refresh_token,
       process.env.REFRESH_TOKEN_SECRET,
       (err, user) => {
         if (err) return res.sendStatus(401);
