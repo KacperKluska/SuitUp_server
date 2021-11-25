@@ -61,7 +61,7 @@ module.exports = function (app) {
 
   app.get('/account/user_data', authenticateToken, async (req, res) => {
     try {
-      const result = await getUserData(req.query.id);
+      const result = await getUserData(req.user.id);
       if (result) return res.status(200).json(result);
       return res.status(400).json({ error: 'Server error' });
     } catch (err) {
