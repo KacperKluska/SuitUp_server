@@ -30,6 +30,7 @@ app.listen(PORT, async (error) => {
       connection = await createConnection();
       require('./Controllers/UserController')(app);
       require('./Controllers/UserShipmentDetailsController')(app);
+      require('./Controllers/ProductController')(app);
     } catch (err) {
       console.error(err);
     }
