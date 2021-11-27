@@ -54,5 +54,11 @@ module.exports = new EntitySchema({
       joinColumn: true,
       onDelete: 'CASCADE',
     },
+    categories: {
+      target: 'Category',
+      type: 'many-to-one',
+      joinColumn: true,
+      onDelete: 'CASCADE',
+    },
   },
 });

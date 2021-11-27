@@ -13,6 +13,7 @@ async function getAllProducts() {
         figure: item.figures.figure,
         color: item.colors.color,
         pattern: item.patterns.pattern,
+        category: item.categories.category,
       };
     });
   } catch (err) {

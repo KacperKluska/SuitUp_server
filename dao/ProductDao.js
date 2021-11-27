@@ -12,6 +12,7 @@ async function getAllProductsDAO() {
         pattern: 'product.patterns',
         color: 'product.colors',
         product_type: 'product.product_types',
+        category: 'product.categories',
       },
     },
   });
