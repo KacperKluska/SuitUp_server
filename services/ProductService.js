@@ -1,4 +1,11 @@
-const { getAllProductsDAO } = require('../dao/ProductDao');
+const {
+  getAllProductsDAO,
+  getPatternsDAO,
+  getProductTypesDAO,
+  getFiguresDAO,
+  getColorsDAO,
+  getCategoriesDAO,
+} = require('../dao/ProductDao');
 
 async function getAllProducts() {
   try {
@@ -21,6 +28,21 @@ async function getAllProducts() {
   }
 }
 
+async function getAllProductsFilters() {
+  try {
+    return [
+      { name: 'patterns', array: await getPatternsDAO() },
+      { name: 'colors', array: await getColorsDAO() },
+      { name: 'figures', array: await getFiguresDAO() },
+      { name: 'product_types', array: await getProductTypesDAO() },
+      { name: 'categories', array: await getCategoriesDAO() },
+    ];
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 module.exports = {
   getAllProducts,
+  getAllProductsFilters,
 };
