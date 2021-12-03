@@ -9,6 +9,13 @@
   },
   "rules": {
     "jsx-a11y/href-no-hash": ["off"],
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "CRLF"
+      }
+    ],
+    "properties": "never",
     "max-len": [
       "warn",
       {
@@ -20,8 +27,7 @@
         "ignoreUrls": true,
         "ignoreStrings": true,
         "ignoreTemplateLiterals": true,
-        "ignoreRegExpLiterals": true,
-        "linebreak-style": "windows"
+        "ignoreRegExpLiterals": true
       }
     ]
   }
