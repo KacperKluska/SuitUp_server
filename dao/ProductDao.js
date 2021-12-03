@@ -27,7 +27,7 @@ async function getAllProductsDAO() {
 async function getPatternsDAO() {
   const connection = getConnection();
   const repository = connection.getRepository(Pattern);
-  const result = await repository.find();
+  const result = await repository.find({ order: { id: 'ASC' } });
   return result.map((item) => {
     return { id: item.id, value: item.pattern };
   });
@@ -36,7 +36,7 @@ async function getPatternsDAO() {
 async function getColorsDAO() {
   const connection = getConnection();
   const repository = connection.getRepository(Color);
-  const result = await repository.find();
+  const result = await repository.find({ order: { id: 'ASC' } });
   return result.map((item) => {
     return { id: item.id, value: item.color };
   });
@@ -45,7 +45,7 @@ async function getColorsDAO() {
 async function getFiguresDAO() {
   const connection = getConnection();
   const repository = connection.getRepository(Figure);
-  const result = await repository.find();
+  const result = await repository.find({ order: { id: 'ASC' } });
   return result.map((item) => {
     return { id: item.id, value: item.figure };
   });
@@ -54,7 +54,7 @@ async function getFiguresDAO() {
 async function getProductTypesDAO() {
   const connection = getConnection();
   const repository = connection.getRepository(ProductType);
-  const result = await repository.find();
+  const result = await repository.find({ order: { id: 'ASC' } });
   return result.map((item) => {
     return { id: item.id, value: item.type };
   });
@@ -63,7 +63,7 @@ async function getProductTypesDAO() {
 async function getCategoriesDAO() {
   const connection = getConnection();
   const repository = connection.getRepository(Category);
-  const result = await repository.find();
+  const result = await repository.find({ order: { id: 'ASC' } });
   return result.map((item) => {
     return { id: item.id, value: item.category };
   });
