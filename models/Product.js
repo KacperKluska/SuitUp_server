@@ -9,6 +9,7 @@ class Product {
     figure_id,
     color_id,
     pattern_id,
+    category_id,
   ) {
     this.id = id;
     this.name = name;
@@ -19,6 +20,7 @@ class Product {
     this.figures = figure_id;
     this.colors = color_id;
     this.patterns = pattern_id;
+    this.categories = category_id;
   }
 }
 

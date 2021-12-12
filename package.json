@@ -5,7 +5,8 @@
   "author": "Kacper Kluska",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "db:seed": "node scripts/seed.js"
   },
   "keywords": [],
   "license": "ISC",
@@ -14,6 +15,7 @@
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "faker": "^5.5.3",
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.7.1",
     "typeorm": "^0.2.38"
