@@ -1,7 +1,6 @@
 const { createConnection } = require('typeorm');
-require('dotenv').config();
-
 const express = require('express');
+require('dotenv').config();
 
 const app = express();
 const jwt = require('jsonwebtoken');
@@ -31,6 +30,7 @@ app.listen(PORT, async (error) => {
       require('./Controllers/UserController')(app);
       require('./Controllers/UserShipmentDetailsController')(app);
       require('./Controllers/ProductController')(app);
+      require('./controllers/ImagesController')(app, express);
     } catch (err) {
       console.error(err);
     }
