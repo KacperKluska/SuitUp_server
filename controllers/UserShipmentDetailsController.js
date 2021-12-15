@@ -21,17 +21,12 @@ module.exports = function (app) {
 
   app.post('/account/shipment_data', authenticateToken, async (req, res) => {
     try {
-      const { country, city, street, house_number, phone_number } = req.body;
-      const user_id = req.user.id;
+      const data = {
+        ...req.body,
+        user_id: req.user.id,
+      };
 
-      const result = await saveUserShipmentDetails(
-        country,
-        city,
-        street,
-        house_number,
-        phone_number,
-        user_id,
-      );
+      const result = await saveUserShipmentDetails(data);
       if (result) return res.status(200).send({ message: 'Success' });
       return res.status(400).send({ error: 'Failure' });
     } catch (err) {
@@ -41,17 +36,12 @@ module.exports = function (app) {
 
   app.patch('/account/shipment_data', authenticateToken, async (req, res) => {
     try {
-      const { country, city, street, house_number, phone_number } = req.body;
-      const user_id = req.user.id;
+      const data = {
+        ...req.body,
+        user_id: req.user.id,
+      };
 
-      const result = await updateAllUserShipmentDetails(
-        user_id,
-        country,
-        city,
-        street,
-        house_number,
-        phone_number,
-      );
+      const result = await updateAllUserShipmentDetails(data);
       if (result) return res.status(200).send({ message: 'Success' });
       return res.status(400).send({ error: 'Failure' });
     } catch (err) {

@@ -5,23 +5,9 @@ const {
 } = require('../dao/UserShipmentDetailsDao');
 const { UserShipmentDetails } = require('../models/UserShipmentDetails');
 
-async function saveUserShipmentDetails(
-  country,
-  city,
-  street,
-  house_number,
-  phone_number,
-  user_id,
-) {
+async function saveUserShipmentDetails(data) {
   try {
-    const userDetails = new UserShipmentDetails();
-    userDetails.id = null;
-    userDetails.country = country;
-    userDetails.city = city;
-    userDetails.street = street;
-    userDetails.house_number = house_number;
-    userDetails.phone_number = phone_number;
-    userDetails.users = user_id;
+    const userDetails = new UserShipmentDetails(null, ...data);
     return await saveUserShipmentDetailsDAO(userDetails);
   } catch (err) {
     console.error(err);
@@ -45,21 +31,14 @@ async function getUserShipmentDetails(userId) {
   }
 }
 
-async function updateAllUserShipmentDetails(
-  userId,
-  country,
-  city,
-  street,
-  house_number,
-  phone_number,
-) {
+async function updateAllUserShipmentDetails(data) {
   try {
     const newData = {
-      country,
-      city,
-      street,
-      house_number,
-      phone_number,
+      country: data.country,
+      city: data.city,
+      street: data.street,
+      house_number: data.house_number,
+      phone_number: data.phone_number,
     };
     return await updateUserShipmentDetailsDAO(userId, newData);
   } catch (err) {
