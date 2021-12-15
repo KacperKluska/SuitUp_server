@@ -16,11 +16,13 @@ async function getUserByEmail(email) {
 
 async function saveUser(name, surname, email, password) {
   try {
-    const user = new User();
-    user.name = name;
-    user.surname = surname;
-    user.email = email;
-    user.password = await bcrypt.hash(password, 10);
+    const user = new User(
+      null,
+      name,
+      surname,
+      email,
+      await bcrypt.hash(password, 10),
+    );
     return await saveUserDAO(user);
   } catch (err) {
     console.log(err);
