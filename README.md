@@ -1,7 +1,7 @@
 # About
 
 This project is a server-side application for my client-side online shop app:
-[SuitUp](https://github.com/KacperKluska/SuitUp_client/blob/master/README.md)
+[SuitUp](https://github.com/KacperKluska/SuitUp_client)
 
 ## Install
 
